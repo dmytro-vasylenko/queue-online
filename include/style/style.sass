@@ -1,0 +1,104 @@
+$width: 900px
+$people-in-raw: 8
+
+*
+	margin: 0
+	padding: 0
+	font-family: "Roboto", Arial, sans-serif
+
+body, html
+	height: 100%
+	width: 100%
+	background: #d9e0e7
+
+#wrapper
+	width: $width + 320px
+	height: 100%
+	margin: 0 auto
+
+main
+	float: left
+
+	.queue
+		width: $width
+		background: #242a30
+		margin: 40px auto 0
+		padding: 15px
+		border-radius: 5px
+		box-shadow: 0 0 5px black
+		overflow: hidden
+		transition: all 0.5s
+		box-sizing: border-box
+
+		&:hover
+			box-shadow: 0 0 15px black
+
+		h2
+			color: white
+			font-size: 20px
+
+		.info
+			display: none
+
+			.people
+				margin-top: 30px
+
+				.place
+					width: ($width - ($people-in-raw - 1)*18.3 )/$people-in-raw
+					height: ($width - ($people-in-raw - 1)*18.3 )/$people-in-raw
+					margin-right: 10px
+					margin-bottom: 10px
+					background: #d9e0e7
+					border-radius: 5px
+					display: inline-block
+					position: relative
+					overflow: hidden
+					cursor: pointer
+
+					&:nth-child(#{$people-in-raw}n)
+						margin-right: 0
+
+					span
+						color: grey
+						font-weight: bold
+						position: absolute
+						right: 5px
+						bottom: 5px
+
+					img
+						width: 50%
+						height: 50%
+						margin-left: 25%
+						margin-top: 25%
+						border-radius: 100%
+
+				.free
+					background: #d9e0e7 url(../img/avatar.png) no-repeat center
+
+		button
+			// width: 200px
+			padding: 0 15px
+			height: 40px
+			display: table
+			margin: 20px auto 0
+			clear: both
+			border: none
+			background: #d9e0e7
+			text-transform: uppercase
+			font-size: 16px
+			border-radius: 5px
+			outline: none
+			cursor: pointer
+
+sidebar
+	width: 300px
+	height: 90%
+	float: left
+	margin: 40px 0 0 20px
+	background: #242a30
+	border-radius: 5px
+	box-shadow: 0 0 5px grey
+
+	#vk_auth
+		margin: 20px auto
+		background: white !important
