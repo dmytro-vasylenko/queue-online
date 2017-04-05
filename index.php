@@ -55,6 +55,15 @@
 		</main>
 		<sidebar>
 			<div id="vk_auth"></div>
+			<?php
+				if($_COOKIE["uid"]):
+					$user = mysqli_fetch_array(mysqli_query($mysqli, "SELECT mail FROM users WHERE user='".$_COOKIE["uid"]."'"));
+			?>
+			<div class="mail">
+				<input type="email" name="mail" placeholder="E-Mail..." value="<?=$user["mail"]?>">
+				<button class="save-mail">Сохранить</button>
+			</div>
+			<?php endif; ?>
 			<script type="text/javascript">
 				VK.Widgets.Auth("vk_auth", {width: 260, authUrl: '/include/php/vk_auth.php'});
 			</script>
