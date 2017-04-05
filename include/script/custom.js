@@ -3,7 +3,7 @@ $(document).ready(function() {
 		$(this).parent().find(".info").stop().slideToggle();
 	});
 	$(document).on("click", ".place", function() {
-		if($.cookie("uid") && !$(this).find("img").length) {
+		if($.cookie("uid") && $(this).hasClass("free")) {
 			for(var i = 0; i < $(this).parent().find(".place").length; i++) {
 				if($(this).parent().find(".place").eq(i).find("img").attr("src") == $.cookie("photo_rec"))
 					return;
