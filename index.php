@@ -57,10 +57,10 @@
 			<div id="vk_auth"></div>
 			<?php
 				if($_COOKIE["uid"]):
-					$user = mysqli_fetch_array(mysqli_query($mysqli, "SELECT mail FROM users WHERE user='".$_COOKIE["uid"]."'"));
+					$user = mysqli_fetch_array(mysqli_query($mysqli, "SELECT mail FROM users WHERE user_id='".$_COOKIE["uid"]."'"));
 			?>
 			<div class="mail">
-				<input type="email" name="mail" placeholder="E-Mail..." value="<?=$user["mail"]?>">
+				<input type="text" name="mail" class="mail" placeholder="E-Mail..." value="<?=$user["mail"]?>">
 				<button class="save-mail">Сохранить</button>
 			</div>
 			<?php endif; ?>

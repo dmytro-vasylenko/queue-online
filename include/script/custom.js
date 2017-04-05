@@ -24,4 +24,14 @@ $(document).ready(function() {
 			})
 		}
 	});
+	$(document).on("click", "button.save-mail", function() {
+		$.ajax({
+			url: "/include/php/api.php",
+			type: "POST",
+			data: "func=set_mail&mail=" + $("input.mail").val(),
+			success: function() {
+				$("input.mail").css({"background": "white url(/include/img/ok-mark.png) 233px center no-repeat"});
+			}
+		});
+	});
 });

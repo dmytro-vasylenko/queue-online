@@ -16,5 +16,13 @@
 					VALUES('', '".$_COOKIE["uid"]."', '".$queueId."', '".$place."')");
 			}
 		break;
+		case "remove":
+			$queueId = $_POST["queue_id"];
+			mysqli_query("DELETE FROM places WHERE queue_id='".$queueId."' AND user='".$_COOKIE["uid"]."'");
+		break;
+		case "set_mail":
+			$mail = $_POST["mail"];
+			mysqli_query($mysqli, "UPDATE users SET mail='".$mail."' WHERE user_id='".$_COOKIE["uid"]."'");
+		break;
 	}
 ?>
