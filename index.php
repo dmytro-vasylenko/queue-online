@@ -23,6 +23,17 @@
 
 				$queues = mysqli_query($mysqli, "SELECT * FROM queues");
 				while($queue = mysqli_fetch_array($queues)):
+					$queueTime = date("U", strtotime($queue["date"]));
+					$currentTime = time();
+					if($queueTime - $currentTime > 60*60*12)
+					{
+						$minutesBefore = round(($queueTime - $currentTime)/60/60, 2);
+						echo "<div class=\"queue close\" id=\"".$queue["id"]."\">";
+						echo "<h2>".$queue["title"]."</h2>";
+						echo "<button class=\"open-info\">Будет доступно через ".$minutesBefore." часов</button>";
+						echo "</div>";
+						continue;
+					}
 			?>
 			<div class="queue" id="<?=$queue["id"]?>">
 				<h2><?=$queue["title"]?></h2>

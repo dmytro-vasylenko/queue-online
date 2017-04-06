@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	$(document).on("click", "button.open-info", function() {
-		$(this).parent().find(".info").stop().slideToggle();
+		if(!$(this).parent().hasClass("close"))
+			$(this).parent().find(".info").stop().slideToggle();
 	});
 	$(document).on("click", ".place", function() {
 		if($.cookie("uid") && $(this).hasClass("free")) {
