@@ -1,0 +1,137 @@
+@import "loader"
+@import "mobile"
+
+$width: 700px
+$people-in-raw: 8
+
+*
+	margin: 0
+	padding: 0
+	font-family: "Roboto", Arial, sans-serif
+
+body, html
+	background: #d9e0e7
+
+#root
+	overflow: hidden
+
+header
+	width: 100%
+	height: 60px
+	background: #5161e8
+	box-shadow: 0 2px 4px grey
+	position: fixed
+	z-index: 999999999
+	top: 0
+	left: 0
+	right: 0
+
+	.container
+		width: $width
+		margin: 0 auto
+
+		#g-signin2
+			float: right
+			margin-top: 5px
+
+		a
+			line-height: 60px
+			height: 60px
+			display: inline-block
+			color: white
+			text-transform: uppercase
+			text-decoration: none
+			padding: 0 10px
+			font-weight: bold
+			transition: color 0.3s ease-in
+
+			&:hover
+				color: #d8d8d8
+
+main
+	width: $width
+	margin: 90px auto 0
+
+	.queue
+		width: $width
+		background: white
+		margin: 0 auto 30px
+		padding: 15px
+		border-radius: 2px
+		box-shadow: 2px 2px 10px black
+		overflow: hidden
+		transition: all 0.5s
+		box-sizing: border-box
+
+		&:hover
+			box-shadow: 0 0 15px black
+
+		h2
+			color: #303030
+			font-size: 20px
+
+		.info-open
+			max-height: 600px !important
+			// transition: max-height 0.5s cubic-bezier(0, 1.05, 0, 1)
+			transition: max-height 0.3s ease-in
+			overflow: hidden
+
+		.info
+			max-height: 0
+			transition: max-height 0.3s ease-in
+			overflow: hidden
+
+			.people
+				margin-top: 30px
+				text-align: center
+
+				.place
+					width: $width/$people-in-raw
+					height: $width/$people-in-raw
+					margin: 0 10px 10px
+					background: #d9e0e7
+					border-radius: 2px
+					display: inline-block
+					position: relative
+					overflow: hidden
+					cursor: pointer
+
+					span
+						color: grey
+						font-weight: bold
+						position: absolute
+						right: 5px
+						bottom: 5px
+
+					img
+						width: 50%
+						height: 50%
+						margin-left: 25%
+						margin-top: 25%
+						border-radius: 200%
+
+				.free
+					background: #d9e0e7 url(../images/avatar.png) no-repeat center
+
+		button
+			width: 150px
+			padding: 0 15px
+			height: 40px
+			display: table
+			margin: 20px auto 0
+			clear: both
+			border: none
+			background: #5161e8
+			text-transform: uppercase
+			color: white
+			font-weight: bold
+			font-size: 16px
+			border-radius: 2px
+			border: 2px solid #5161e8
+			outline: none
+			cursor: pointer
+			transition: all 0.4s linear
+
+			&:hover
+				color: #5161e8
+				background: white

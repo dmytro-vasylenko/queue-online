@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,oCAAoC,CAElC,iBAAU,CACT,KAAK,CAAE,cAAwB,CAEjC,IAAI,CACH,KAAK,CAAE,cAAwB,CAE/B,WAAM,CACL,KAAK,CAAE,eAAe,CAEtB,mBAAO,CACN,UAAU,CAAE,MAAM,CAElB,0BAAM,CACL,MAAM,CAAE,qBAAqB",
+"sources": ["mobile.sass"],
+"names": [],
+"file": "mobile.css"
+}
