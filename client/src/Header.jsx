@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 
+import Settings from "./Settings";
+
 /* global gapi */
 
 class Sidebar extends Component {
@@ -37,9 +39,12 @@ class Sidebar extends Component {
 		return (
 			<header>
 				<div className="container">
-				{this.state.menus.map((item, index) => {
-					return <a href={item.link} key={index}>{item.title}</a>;
-				})}
+					<nav>
+						{this.state.menus.map((item, index) => {
+							return <a href={item.link} key={index}>{item.title}</a>;
+						})}
+					</nav>
+					<Settings />
 					<div id="g-signin2" data-onsuccess={this.onSignIn} />
 				</div>
 			</header>
