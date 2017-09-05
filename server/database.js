@@ -9,15 +9,20 @@ function addPlace(data, callback) {
 			if(!doc) {
 				db.collection("queues").update({id}, {
 					$push: {
-						places: {
-							name,
-							place,
-							photo,
-							email
-						}
+						places: {name, place, photo, email}
 					}
 				});
-				callback(err);
+				callback(null, "NEW_PLACE");
+			} else {
+				let currentPlace = doc.places.filter(item => item.email === email && item.place == place)[0];
+				if(currentPlace) {
+					db.collection("queues").update({id}, {
+						$pull: {
+							places: {name, place, photo, email}
+						}
+					});
+					callback(null, "REMOVE_PLACE");
+				}
 			}
 		})
 	});

@@ -28,18 +28,25 @@ server.post("/api/place/", (res, req) => {
 		name,
 		photo,
 		email
-	}, function(err) {
+	}, (err, type) => {
 		if(err) {
 			return req.status(500).send(err);
 		}
-		ws.socketBroadcast("NEW_PLACE", {
-			id,
-			place,
-			placeData: {
-				photo,
-				name
-			}
-		});
+		if(type == "NEW_PLACE") {
+			ws.socketBroadcast("NEW_PLACE", {
+				id,
+				place,
+				placeData: {
+					photo,
+					name
+				}
+			});
+		} else if(type == "REMOVE_PLACE") {
+			ws.socketBroadcast("REMOVE_PLACE", {
+				id,
+				place
+			});
+		}
 		return req.sendStatus(200);
 	});
 });

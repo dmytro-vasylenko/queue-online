@@ -9,6 +9,10 @@ class WS extends Component {
 		this.io.on("NEW_PLACE", data => {
 			this.props.onSetPlace(data);
 		});
+
+		this.io.on("REMOVE_PLACE", data => {
+			this.props.onRemovePlace(data);
+		});
 	}
 
 	render() {
@@ -18,8 +22,11 @@ class WS extends Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onSetPlace: (data) => {
+		onSetPlace: data => {
 			dispatch({type: "SET_PLACE", payload: data});
+		},
+		onRemovePlace: data => {
+			dispatch({type: "REMOVE_PLACE", payload: data});
 		}
 	};
 };

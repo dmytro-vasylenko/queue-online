@@ -26,7 +26,7 @@ class Place extends Component {
 	render() {
 		if(this.props.info) {
 			return (
-				<div className="place" data-id={this.props.id}>
+				<div className="place" data-id={this.props.id} onClick={this.handleTakePlace}>
 					<img src={this.props.info.photo} alt={this.props.info.name} />
 				</div>
 			);

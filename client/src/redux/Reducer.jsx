@@ -7,7 +7,7 @@ const initialState = {
 const reducer = function(state = initialState, action) {
 	switch(action.type) {
 		case types.SET_QUEUE:
-			var places = {};
+			let places = {};
 			action.payload.places.forEach(item => {
 				places[item.place] = item;
 			});
@@ -15,8 +15,14 @@ const reducer = function(state = initialState, action) {
 			state.queues[action.payload.id] = action.payload;
 			return state;
 		case types.SET_PLACE:
-			var newQueues = state.queues;
+			let newQueues = state.queues;
 			newQueues[action.payload.id].places[action.payload.place] = action.payload.placeData;
+			return {
+				queues: newQueues
+			};
+		case types.REMOVE_PLACE:
+			newQueues = state.queues;
+			delete newQueues[action.payload.id].places[action.payload.place];
 			return {
 				queues: newQueues
 			};
