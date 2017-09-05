@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import Queue from "./Queue";
 import axios from "axios";
+
+import Queue from "./Queue";
+import * as types from "./constants/types";
 
 const url = "http://localhost:3001/api/";
 
@@ -35,11 +37,12 @@ class Content extends Component {
 	}
 }
 
-export default connect(
-	state => ({}),
-	dispatch => ({
+const mapDispatchToProps = dispatch => {
+	return {
 		onAddQueue: (data) => {
-			dispatch({type: "SET_QUEUE", payload: data});
+			dispatch({type: types.SET_QUEUE, payload: data});
 		}
-	})
-)(Content);
+	};
+};
+
+export default connect(null, mapDispatchToProps)(Content);

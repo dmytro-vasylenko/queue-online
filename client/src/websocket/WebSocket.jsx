@@ -16,11 +16,12 @@ class WS extends Component {
 	}
 };
 
-export default connect(
-	state => ({}),
-	dispatch => ({
+const mapDispatchToProps = dispatch => {
+	return {
 		onSetPlace: (data) => {
 			dispatch({type: "SET_PLACE", payload: data});
 		}
-	})
-)(WS);
+	};
+};
+
+export default connect(null, mapDispatchToProps)(WS);

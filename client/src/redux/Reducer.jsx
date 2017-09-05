@@ -1,5 +1,4 @@
-const SET_QUEUE = "SET_QUEUE";
-const SET_PLACE = "SET_PLACE";
+import * as types from "../constants/types";
 
 const initialState = {
 	queues: {}
@@ -7,7 +6,7 @@ const initialState = {
 
 const reducer = function(state = initialState, action) {
 	switch(action.type) {
-		case SET_QUEUE:
+		case types.SET_QUEUE:
 			var places = {};
 			action.payload.places.forEach(item => {
 				places[item.place] = item;
@@ -15,7 +14,7 @@ const reducer = function(state = initialState, action) {
 			action.payload.places = places;
 			state.queues[action.payload.id] = action.payload;
 			return state;
-		case SET_PLACE:
+		case types.SET_PLACE:
 			var newQueues = state.queues;
 			newQueues[action.payload.id].places[action.payload.place] = action.payload.placeData;
 			return {

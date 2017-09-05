@@ -36,9 +36,10 @@ class Place extends Component {
 	}
 }
 
-export default connect(
-	(state, ownProps) => ({
+const mapStateToProps = (state, ownProps) => {
+	return {
 		info: state.queues[ownProps["data-queue-id"]].places[ownProps.id]
-	}),
-	dispatch => ({})
-)(Place);
+	};
+};
+
+export default connect(mapStateToProps)(Place);
