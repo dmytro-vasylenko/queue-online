@@ -18,6 +18,10 @@ server.use(bodyPareser.urlencoded({extended: false}));
 server.post("/api/place/", (res, req) => {
 	let {id, place, name, photo, email} = res.body;
 
+	if(!name || !photo || !email) {
+		return;
+	}
+
 	database.addPlace({
 		id: Number(id),
 		place,
