@@ -1,5 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 
+const types = require("./constants").types;
+
 const url = "mongodb://localhost:27017/queue";
 
 function addPlace(data, callback) {
@@ -12,7 +14,7 @@ function addPlace(data, callback) {
 						places: {name, place, photo, email}
 					}
 				});
-				callback(null, "NEW_PLACE");
+				callback(null, types.NEW_PLACE);
 			} else {
 				let currentPlace = doc.places.filter(item => item.email === email && item.place == place)[0];
 				if(currentPlace) {
@@ -21,7 +23,7 @@ function addPlace(data, callback) {
 							places: {name, place, photo, email}
 						}
 					});
-					callback(null, "REMOVE_PLACE");
+					callback(null, types.REMOVE_PLACE);
 				}
 			}
 		})

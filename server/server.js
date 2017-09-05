@@ -4,6 +4,7 @@ const bodyPareser = require("body-parser");
 const http = require("http").Server(server);
 const database = require("./database");
 const ws = require("./ws")(http);
+const types = require("./constants").types;
 
 const PORT = 3001;
 
@@ -32,8 +33,8 @@ server.post("/api/place/", (res, req) => {
 		if(err) {
 			return req.status(500).send(err);
 		}
-		if(type == "NEW_PLACE") {
-			ws.socketBroadcast("NEW_PLACE", {
+		if(type == types.NEW_PLACE) {
+			ws.socketBroadcast(types.NEW_PLACE, {
 				id,
 				place,
 				placeData: {
@@ -41,8 +42,8 @@ server.post("/api/place/", (res, req) => {
 					name
 				}
 			});
-		} else if(type == "REMOVE_PLACE") {
-			ws.socketBroadcast("REMOVE_PLACE", {
+		} else if(type == types.REMOVE_PLACE) {
+			ws.socketBroadcast(types.REMOVE_PLACE, {
 				id,
 				place
 			});
