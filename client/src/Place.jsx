@@ -16,7 +16,8 @@ class Place extends Component {
 			place: this.props.id,
 			id: this.props["data-queue-id"],
 			name: localStorage.getItem("name"),
-			photo: localStorage.getItem("photo")
+			photo: localStorage.getItem("photo"),
+			email: localStorage.getItem("email")
 		}).then(response => {
 			console.log(response);
 		});
@@ -26,7 +27,7 @@ class Place extends Component {
 		if(this.props.info) {
 			return (
 				<div className="place" data-id={this.props.id}>
-					<img src={this.props.info.photo} alt="" />
+					<img src={this.props.info.photo} alt={this.props.info.name} />
 				</div>
 			);
 		} else {
