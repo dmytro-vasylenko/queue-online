@@ -10,14 +10,14 @@ const reducer = function(state = initialState, action) {
 		case SET_QUEUE:
 			var places = {};
 			action.payload.places.forEach(item => {
-				places[item.place] = item.name;
+				places[item.place] = item;
 			});
 			action.payload.places = places;
 			state.queues[action.payload.id] = action.payload;
 			return state;
 		case SET_PLACE:
 			var newQueues = state.queues;
-			newQueues[action.payload.id].places[action.payload.place] = action.payload.placeInfo;
+			newQueues[action.payload.id].places[action.payload.place] = action.payload.placeData;
 			return {
 				queues: newQueues
 			};
