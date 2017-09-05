@@ -1,5 +1,7 @@
 import React, {Component} from "react";
+
 /* global gapi */
+
 class Sidebar extends Component {
 	constructor(props) {
 		super(props);
