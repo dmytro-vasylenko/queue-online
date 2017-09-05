@@ -3,28 +3,33 @@ const MongoClient = require("mongodb").MongoClient;
 const url = "mongodb://localhost:27017/queue";
 
 function addPlace(data, callback) {
-	console.log(data);
-	var {name, place, id} = data;
-	MongoClient.connect(url, function(err, db) {
-		db.collection("queues").update({id}, {
-			$push: {
-				places: {
-					name,
-					place
-				}
+	let {name, place, id, photo, email} = data;
+	MongoClient.connect(url, (err, db) => {
+		db.collection("queues").findOne({"places.email": email, id}, (err, doc) => {
+			if(!doc) {
+				db.collection("queues").update({id}, {
+					$push: {
+						places: {
+							name,
+							place,
+							photo,
+							email
+						}
+					}
+				});
+				callback(err);
 			}
-		});
-		callback(err);
+		})
 	});
 }
 
 function getQueues(callback) {
-	MongoClient.connect(url, function(err, db) {
+	MongoClient.connect(url, (err, db) => {
 		if(err) {
 			callback(err);
 		}
-		db.collection("queues").find({}, function(err, queues) {
-			queues.toArray(function(err, queue) {
+		db.collection("queues").find({}, (err, queues) => {
+			queues.toArray((err, queue) => {
 				callback(err, queue);
 			});
 		});
