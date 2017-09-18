@@ -174,3 +174,61 @@ button
 	&:hover
 		color: #5161e8
 		background: white
+
+input
+	width: 100%
+	box-sizing: border-box
+	padding: 0 20px
+	border: 2px solid #5161e8
+	background: nobe
+	outline: none
+	height: 40px
+	font-size: 16px
+	margin-bottom: 10px
+
+.tab
+	overflow: hidden
+	width: 100%
+	margin-bottom: 2px
+
+	.title
+		background: #5161e8
+		color: white
+		line-height: 40px
+		height: 40px
+		padding: 0 20px
+		float: left
+		width: 100%
+		box-sizing: border-box
+		cursor: pointer
+
+		&:after
+			content: "+"
+			display: block
+			color: white
+			float: right
+			font-weight: bold
+			font-size: 25px
+			line-height: 40px
+
+	.content
+		display: none
+		overflow: hidden
+		border: 2px solid #5161e8
+		padding: 20px
+		background: white
+
+		.center-block
+			text-align: center
+
+
+		input[type=date],
+		input[type=number]
+			width: 30%
+			text-align: center
+			margin: 0 5px
+			display: inline-block
+
+	.content-open
+		display: block
+
