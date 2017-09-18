@@ -12,20 +12,27 @@ const reducer = function(state = initialState, action) {
 				places[item.place] = item;
 			});
 			action.payload.places = places;
-			state.queues[action.payload.id] = action.payload;
-			return state;
-		case types.SET_PLACE:
-			let newQueues = state.queues;
-			newQueues[action.payload.id].places[action.payload.place] = action.payload.placeData;
 			return {
-				queues: newQueues
+				queues: Object.assign({}, state.queues, {
+					[action.payload.id]: action.payload
+				})
+			};
+		case types.SET_PLACE:
+			return {
+				queues: Object.assign({}, state.queues, {
+					[action.payload.id]: Object.assign({}, state.queues[action.payload.id], {
+						[action.payload.place]: action.payload.placeData
+					})
+				})
 			};
 		case types.REMOVE_PLACE:
-			newQueues = state.queues;
+			let newQueues = state.queues;
 			delete newQueues[action.payload.id].places[action.payload.place];
 			return {
 				queues: newQueues
 			};
+		default:
+			return state;
 	}
 }
 
