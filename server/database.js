@@ -34,13 +34,31 @@ function getQueues(callback) {
 	MongoClient.connect(url, (err, db) => {
 		if(err) {
 			callback(err);
-		}
-		db.collection("queues").find({}, (err, queues) => {
-			queues.toArray((err, queue) => {
-				callback(err, queue);
+		} else {
+			db.collection("queues").find({}, (err, queues) => {
+				queues.toArray((err, queue) => {
+					callback(err, queue);
+				});
 			});
-		});
+		}
 	});
 }
 
-module.exports = {addPlace, getQueues};
+function addQueue(data, callback) {
+	MongoClient.connect(url, (err, db) => {
+		if(err) {
+			callback(err);
+		} else {
+			let queueId = Number(Math.random().toString().slice(2));
+			db.collection("queues").insert({
+				id: queueId,
+				title: data.title,
+				countOfPlaces: data.quantityOfPlaces,
+				places: []
+			});
+			callback(null, queueId);
+		}
+	});
+}
+
+module.exports = {addPlace, getQueues, addQueue};

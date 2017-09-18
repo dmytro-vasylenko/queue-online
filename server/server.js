@@ -61,6 +61,22 @@ server.get("/api/queues/", (res, req) => {
 	});
 });
 
+server.post("/api/queues", (res, req) => {
+	let data = res.body;
+	database.addQueue(data, (err, queueId) => {
+		if(err) {
+			return req.status(500).send("OK");
+		}
+		ws.socketBroadcast(types.NEW_QUEUE, {
+			id: queueId,
+			title: data.title,
+			countOfPlaces: data.quantityOfPlaces,
+			places: []
+		});
+		return req.status(200).send("OK");
+	});
+});
+
 http.listen(PORT, () => {
 	console.log("Server started at port", PORT);
 });
