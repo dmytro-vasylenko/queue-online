@@ -21,7 +21,9 @@ const reducer = function(state = initialState, action) {
 			return {
 				queues: Object.assign({}, state.queues, {
 					[action.payload.id]: Object.assign({}, state.queues[action.payload.id], {
-						[action.payload.place]: action.payload.placeData
+						places: {
+							[action.payload.place]: action.payload.placeData
+						}
 					})
 				})
 			};
