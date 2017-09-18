@@ -17,25 +17,33 @@ class Content extends Component {
 	}
 
 	componentWillMount() {
-		axios.get(url + "queues").then(queues => {
-			this.setState({
-				queues: queues.data.map((item, id) => {
+		if(!Object.keys(this.props.queues).length) {
+			axios.get(url + "queues").then(queues => {
+				queues.data.map(item => {
 					this.props.onAddQueue(item);
-					return <Queue title={item.title} countOfPlaces={item.countOfPlaces} key={id} data-id={item.id} />;
-				})
+				});
+				document.getElementById("preloader").style.display = "none";
 			});
-			document.getElementById("preloader").style.display = "none";
-		});
+		}
 	}
 
 	render() {
 		return (
 			<main>
-				{this.state.queues}
+				{Object.keys(this.props.queues).map((item, index) => {
+					let queue = this.props.queues[item];
+					return <Queue title={queue.title} countOfPlaces={queue.countOfPlaces} key={index} data-id={queue.id} />;
+				})}
 			</main>
-			);
+		);
 	}
 }
+
+const mapStateTopProps = state => {
+	return {
+		queues: state.queues
+	};
+};
 
 const mapDispatchToProps = dispatch => {
 	return {
@@ -45,4 +53,4 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(Content);
+export default connect(mapStateTopProps, mapDispatchToProps)(Content);
