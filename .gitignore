@@ -1,6 +1,7 @@
 client/node_modules
 client/build
 client/yarn.lock
+client/yarn-error.log
 
 server/node_modules
 server/yarn.lock
