@@ -1,4 +1,7 @@
 import React, {Component} from "react";
+import axios from "axios";
+
+const URL = "http://localhost:3001/api";
 
 class Add extends Component {
 	constructor(props) {
@@ -6,7 +9,7 @@ class Add extends Component {
 
 		this.state = {
 			title: "",
-			quantityOfPlace: "",
+			quantityOfPlaces: "",
 			date: ""
 		};
 
@@ -25,11 +28,27 @@ class Add extends Component {
 	}
 
 	changeQuantity(e) {
-		this.setState({quantityOfPlace: e.target.value});
+		this.setState({quantityOfPlaces: e.target.value});
 	}
 
 	handleCreate() {
-		console.log(this.state);
+		let {state: queue} = this;
+		if(queue.title && queue.date && queue.quantityOfPlaces) {
+			axios.post(`${URL}/queues`, {
+				title: queue.title,
+				date: queue.date,
+				quantityOfPlaces: queue.quantityOfPlaces
+			}).then(response => {
+				alert("Очередь была успешно добавлена");
+				this.setState({
+					title: "",
+					quantityOfPlaces: "",
+					date: ""
+				});
+			})
+		} else {
+			alert("Вы не заполнили все поля");
+		}
 	}
 
 	render() {
@@ -38,7 +57,7 @@ class Add extends Component {
 				<input type="text" value={this.state.title} onChange={this.changeTitle} placeholder="Название очереди" />
 				<div className="center-block">
 					<input type="date" value={this.state.date} onChange={this.changeDate} placeholder="Дата открытия" />
-					<input type="number" value={this.state.quantityOfPlace} onChange={this.changeQuantity} placeholder="Количество мест"/>
+					<input type="number" value={this.state.quantityOfPlaces} onChange={this.changeQuantity} placeholder="Количество мест"/>
 				</div>
 				<button onClick={this.handleCreate}>Создать</button>
 			</div>
