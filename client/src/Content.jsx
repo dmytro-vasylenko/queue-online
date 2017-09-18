@@ -5,7 +5,7 @@ import axios from "axios";
 import Queue from "./Queue";
 import * as types from "./constants/types";
 
-const url = "http://localhost:3001/api/";
+const URL = "http://localhost:3001/api";
 
 class Content extends Component {
 	constructor(props) {
@@ -18,7 +18,7 @@ class Content extends Component {
 
 	componentWillMount() {
 		if(!Object.keys(this.props.queues).length) {
-			axios.get(url + "queues").then(queues => {
+			axios.get(`${URL}/queues`).then(queues => {
 				queues.data.map(item => {
 					this.props.onAddQueue(item);
 				});
