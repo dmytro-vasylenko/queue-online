@@ -2,9 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {createStore} from "redux";
 import {Provider} from "react-redux";
-import App from "./App";
+import {Router, Route, hashHistory} from "react-router";
+
 import reducer from "./redux/Reducer";
-import WS from "./websocket/WebSocket";
+import App from "./App";
+import Admin from "./Admin";
 
 const store = createStore(
 	reducer,
@@ -13,8 +15,10 @@ const store = createStore(
 
 ReactDOM.render(
 	<Provider store={store}>
-		<div>
-			<WS />
-			<App />
-		</div>
-	</Provider>, document.getElementById("root"));
+		<Router history={hashHistory} onUpdate={() => window.scrollTo(0, 0)}>
+			<Route path="/" component={App} />
+			<Route path="/admin" component={Admin} />
+		</Router>
+	</Provider>,
+	document.getElementById("root")
+);

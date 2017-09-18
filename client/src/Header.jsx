@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Link} from "react-router";
 
 import Settings from "./Settings";
 
@@ -10,9 +11,9 @@ class Sidebar extends Component {
 
 		this.state = {
 			menus: [
-				{title: "Главная", link: "#"},
+				{title: "Главная", link: "/"},
 				{title: "Контакты", link: "#"},
-				{title: "Создать", link: "#"}
+				{title: "Админ-панель", link: "/admin"}
 			]
 		};
 	}
@@ -43,7 +44,7 @@ class Sidebar extends Component {
 				<div className="container">
 					<nav>
 						{this.state.menus.map((item, index) => {
-							return <a href={item.link} key={index}>{item.title}</a>;
+							return <Link to={item.link} key={index}>{item.title}</Link>;
 						})}
 					</nav>
 					{isLogin && <Settings />}
