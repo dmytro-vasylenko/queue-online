@@ -12,7 +12,6 @@ class Sidebar extends Component {
 		this.state = {
 			menus: [
 				{title: "Главная", link: "/"},
-				{title: "Контакты", link: "#"},
 				{title: "Админ-панель", link: "/admin"}
 			]
 		};
