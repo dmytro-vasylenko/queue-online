@@ -19,7 +19,7 @@ class Content extends Component {
 	componentWillMount() {
 		if(!Object.keys(this.props.queues).length) {
 			axios.get(`${URL}/queues`).then(queues => {
-				queues.data.map(item => {
+				queues.data.forEach(item => {
 					this.props.onAddQueue(item);
 				});
 				document.getElementById("preloader").style.display = "none";
