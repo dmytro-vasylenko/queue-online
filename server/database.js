@@ -7,14 +7,20 @@ const url = "mongodb://localhost:27017/queue";
 function addPlace(data, callback) {
 	let {name, place, id, photo, email} = data;
 	MongoClient.connect(url, (err, db) => {
-		db.collection("queues").findOne({"places.email": email, id}, (err, doc) => {
+		db.collection("queues").findOne({"places.place": place, id}, (err, doc) => {
 			if(!doc) {
-				db.collection("queues").update({id}, {
-					$push: {
-						places: {name, place, photo, email}
+				db.collection("queues").findOne({"places.email": email, id}, (err, doc) => {
+					if(!doc) {
+						db.collection("queues").update({id}, {
+							$push: {
+								places: {name, place, photo, email}
+							}
+						});
+						callback(null, types.NEW_PLACE);
+					} else {
+						callback("Error");
 					}
 				});
-				callback(null, types.NEW_PLACE);
 			} else {
 				let currentPlace = doc.places.filter(item => item.email === email && item.place == place)[0];
 				if(currentPlace) {
@@ -24,6 +30,8 @@ function addPlace(data, callback) {
 						}
 					});
 					callback(null, types.REMOVE_PLACE);
+				} else {
+					callback("Error");
 				}
 			}
 		})
