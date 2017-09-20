@@ -27,14 +27,14 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount() {
-		// gapi.signin2.render("g-signin2", {
-		// 	"scope": "https://www.googleapis.com/auth/plus.login",
-		// 	"width": 240,
-		// 	"height": 50,
-		// 	"longtitle": true,
-		// 	"theme": "light",
-		// 	"onsuccess": this.onSignIn
-		// });
+		gapi.signin2.render("g-signin2", {
+			"scope": "https://www.googleapis.com/auth/plus.login",
+			"width": 240,
+			"height": 50,
+			"longtitle": true,
+			"theme": "light",
+			"onsuccess": this.onSignIn
+		});
 	}
 
 	render() {
