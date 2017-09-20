@@ -23,15 +23,9 @@ server.post("/api/place/", (res, req) => {
 		return;
 	}
 
-	database.addPlace({
-		id: Number(id),
-		place,
-		name,
-		photo,
-		email
-	}, (err, type) => {
+	database.addPlace({id: Number(id), place, name, photo, email}, (err, type) => {
 		if(err) {
-			return req.status(500).send(err);
+			return req.status(400).send(err);
 		}
 		if(type == types.NEW_PLACE) {
 			ws.socketBroadcast(types.NEW_PLACE, {
@@ -48,7 +42,7 @@ server.post("/api/place/", (res, req) => {
 				place
 			});
 		}
-		return req.sendStatus(200);
+		return req.status(200).send("OK");
 	});
 });
 
