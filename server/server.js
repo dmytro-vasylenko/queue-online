@@ -6,7 +6,7 @@ const database = require("./database");
 const ws = require("./ws")(http);
 const types = require("./constants").types;
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 server.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -16,50 +16,50 @@ server.use((req, res, next) => {
 server.use(bodyPareser.json());
 server.use(bodyPareser.urlencoded({extended: false}));
 
-server.post("/api/place/", (res, req) => {
+server.post("/api/place", (res, req) => {
 	let {id, place, name, photo, email} = res.body;
 
-	if(!name || !photo || !email) {
-		return;
+	if(!name || !photo || !email || !place || !id) {
+		return req.sendStatus(400);
 	}
 
-	database.addPlace({id: Number(id), place, name, photo, email}, (err, type) => {
+	database.addPlace({id: Number(id), place, name, photo, email}, (err, actionType) => {
 		if(err) {
 			return req.status(400).send(err);
 		}
-		if(type == types.NEW_PLACE) {
-			ws.socketBroadcast(types.NEW_PLACE, {
-				id,
-				place,
-				placeData: {
-					photo,
-					name
-				}
-			});
-		} else if(type == types.REMOVE_PLACE) {
-			ws.socketBroadcast(types.REMOVE_PLACE, {
-				id,
-				place
-			});
+
+		switch(actionType) {
+			case types.NEW_PLACE:
+				ws.socketBroadcast(types.NEW_PLACE, {
+					id,
+					place,
+					placeData: {photo, name}
+				});
+				break;
+			case types.REMOVE_PLACE:
+				ws.socketBroadcast(types.REMOVE_PLACE, {id, place});
+				break;
 		}
-		return req.status(200).send("OK");
+
+		return req.sendStatus(200);
 	});
 });
 
-server.get("/api/queues/", (res, req) => {
-	database.getQueues((err, queues) => {
-		if(err) {
-			return req.status(500).send(err);
-		}
+server.get("/api/queues", (res, req) => {
+	database.getQueues(queues => {
 		return req.status(200).send(queues);
 	});
 });
 
 server.post("/api/queues", (res, req) => {
 	let data = res.body;
-	database.addQueue(data, (err, queueId) => {
+	if(!data || !data.title || !data.quantityOfPlaces) {
+		return req.sendStatus(400);
+	}
+
+	database.addQueue(data, queueId => {
 		if(err) {
-			return req.status(500).send("OK");
+			return req.sendStatus(200);
 		}
 		ws.socketBroadcast(types.NEW_QUEUE, {
 			id: queueId,
@@ -67,7 +67,7 @@ server.post("/api/queues", (res, req) => {
 			countOfPlaces: data.quantityOfPlaces,
 			places: []
 		});
-		return req.status(200).send("OK");
+		return req.sendStatus(200);
 	});
 });
 
