@@ -7,14 +7,22 @@ const url = "mongodb://admin:admin@ds163034.mlab.com:63034/heroku_t21z98rs";
 
 var db;
 
-MongoClient.connect(url, (err, database) => {
-	if(!err && database) {
-		db = database;
-		console.log("Connected to MongoDB.");
-	} else {
-		console.log("Error while it was connecting to MongoDB.");
+const open = callback => {
+	MongoClient.connect(url, (err, database) => {
+		if(!err && database) {
+			db = database;
+			callback();
+		} else {
+			console.log(`Error while it was connecting to MongoDB: ${err}`);
+		}
+	});
+};
+
+const close = () => {
+	if(db) {
+		db.close();
 	}
-});
+};
 
 const addPlace = async (data, callback) => {
 	let {name, place, id, photo, email} = data;
@@ -30,7 +38,7 @@ const addPlace = async (data, callback) => {
 			});
 			callback(null, types.NEW_PLACE);
 		} else {
-			callback("Error");
+			callback("This is not your place.");
 		}
 	} else {
 		let currentPlace = selectedPlace.places.filter(item => item.email === email && item.place == place)[0];
@@ -53,7 +61,7 @@ const getQueues = async callback => {
 }
 
 const addQueue = async (data, callback) => {
-	let queueId = Number(Math.random().toString().slice(2));
+	let queueId = Math.random().toString().slice(2);
 	await db.collection("queues").insert({
 		id: queueId,
 		title: data.title,
@@ -63,4 +71,8 @@ const addQueue = async (data, callback) => {
 	callback(queueId);
 }
 
-module.exports = {addPlace, getQueues, addQueue};
+const deleteQueue = data => {
+	db.collection("queues").remove({title: data.title});
+};
+
+module.exports = {addPlace, getQueues, addQueue, close, open, deleteQueue};
