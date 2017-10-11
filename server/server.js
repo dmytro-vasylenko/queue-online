@@ -8,6 +8,10 @@ const types = require("./constants").types;
 
 const PORT = process.env.PORT || 3001;
 
+database.open(() => {
+	console.log("Connected to MongoDB.");
+});
+
 server.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', req.headers.origin);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -23,7 +27,7 @@ server.post("/api/place", (res, req) => {
 		return req.sendStatus(400);
 	}
 
-	database.addPlace({id: Number(id), place, name, photo, email}, (err, actionType) => {
+	database.addPlace({id, place, name, photo, email}, (err, actionType) => {
 		if(err) {
 			return req.status(400).send(err);
 		}
@@ -53,14 +57,11 @@ server.get("/api/queues", (res, req) => {
 
 server.post("/api/queues", (res, req) => {
 	let data = res.body;
-	if(!data || !data.title || !data.quantityOfPlaces) {
+	if(!data || !data.title || !data.quantityOfPlaces || !data.date) {
 		return req.sendStatus(400);
 	}
 
 	database.addQueue(data, queueId => {
-		if(err) {
-			return req.sendStatus(200);
-		}
 		ws.socketBroadcast(types.NEW_QUEUE, {
 			id: queueId,
 			title: data.title,
@@ -69,6 +70,16 @@ server.post("/api/queues", (res, req) => {
 		});
 		return req.sendStatus(200);
 	});
+});
+
+server.delete("/api/queue", (res, req) => {
+	let data = res.body;
+	if(!data) {
+		return req.sendStatus(400);
+	}
+
+	database.deleteQueue(data);
+	req.sendStatus(200);
 });
 
 http.listen(PORT, () => {
