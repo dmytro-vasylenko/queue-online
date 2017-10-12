@@ -8,8 +8,8 @@ const database = require("../server/database");
 
 chai.use(chaiHttp);
 
-// const server = "http://queues-service.herokuapp.com/api";
-const server = "http://localhost:3001/api";
+const server = "http://queues-service.herokuapp.com/api";
+// const server = "http://localhost:3001/api";
 
 describe("Server", () => {
 	it("it must connected to MongoDB", done => {
@@ -31,7 +31,7 @@ describe("Server", () => {
 	it("it must POST queue", done => {
 		chai.request(server).post("/queues").send({
 			title: "test",
-			quantityOfPlaces: "9999",
+			quantityOfPlaces: "99",
 			date: "11.11.1111"
 		}).end((err, res) => {
 			res.should.have.status(200);
