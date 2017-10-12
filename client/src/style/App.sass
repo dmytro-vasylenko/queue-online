@@ -124,6 +124,19 @@ main
 				margin-top: 30px
 				text-align: center
 
+				.lds-rolling
+					width: $width/$people-in-raw !important
+					height: $width/$people-in-raw !important
+
+				.lds-rolling div,
+				.lds-rolling div:after
+					width: 50px !important
+					height: 50px !important
+					top: $width/2/$people-in-raw !important
+					left: $width/2/$people-in-raw !important
+					border: 10px solid #5161e8 !important
+					border-top-color: transparent !important
+
 				.place
 					width: $width/$people-in-raw
 					height: $width/$people-in-raw

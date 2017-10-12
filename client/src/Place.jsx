@@ -2,43 +2,62 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import axios from "axios";
 
-const url = "http://localhost:3001/api/";
+const url = "https://queues-service.herokuapp.com/api/";
 
 class Place extends Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			loading: false
+		};
+
 		this.handleTakePlace = this.handleTakePlace.bind(this);
 	}
 
-	handleTakePlace(event) {
-		axios.post(url + "place", {
+	async handleTakePlace(event) {
+		let places = this.props.places;
+		let selectedCurrentPlace = places[this.props.id] && places[this.props.id].email != localStorage.getItem("email");
+		let userInQueue = Object.keys(places).filter(item => places[item].email == localStorage.getItem("email") && item != this.props.id)[0];
+		if(selectedCurrentPlace || userInQueue) {
+			return;
+		}
+
+
+		this.setState({loading: true});
+		await axios.post(url + "place", {
 			place: this.props.id,
 			id: this.props["data-queue-id"],
 			name: localStorage.getItem("name"),
 			photo: localStorage.getItem("photo"),
 			email: localStorage.getItem("email")
-		}).then(response => {
-			console.log(response);
 		});
+		this.setState({loading: false});
 	}
 
 	render() {
-		if(this.props.info) {
-			return (
-				<div className="place" data-id={this.props.id} onClick={this.handleTakePlace}>
-					<img src={this.props.info.photo} alt={this.props.info.name} title={this.props.info.name} />
-				</div>
-			);
+		const info = this.props.places[this.props.id];
+
+		let place;
+		let classes = ["place"];
+
+		if(info) {
+			place = <img src={info.photo} alt={info.name} title={info.name} />;
 		} else {
-			return <div className="place free" data-id={this.props.id} onClick={this.handleTakePlace}></div>;
+			classes.push("free");
 		}
+
+		if(this.state.loading) {
+			classes.push("lds-rolling");
+		}
+
+		return <div className={classes.join(" ")} data-id={this.props.id} onClick={this.handleTakePlace}><div/>{place}</div>;
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		info: state.queues[ownProps["data-queue-id"]].places[ownProps.id]
+		places: state.queues[ownProps["data-queue-id"]].places
 	};
 };
 
