@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import openSocket from "socket.io-client";
 
 const NEW_PLACE = "NEW_PLACE";
 const REMOVE_PLACE = "REMOVE_PLACE";
 const NEW_QUEUE = "NEW_QUEUE";
 
-class WS extends Component {
-	io = window.io.connect("http://localhost:3001/");
 
+class WS extends Component {
+	io = openSocket("https://queues-service.herokuapp.com/");
 	componentDidMount() {
 		this.io.on(NEW_PLACE, data => this.props.onSetPlace(data));
 		this.io.on(REMOVE_PLACE, data => this.props.onRemovePlace(data));
