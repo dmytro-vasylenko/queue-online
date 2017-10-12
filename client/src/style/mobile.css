@@ -1,2 +1,2 @@
-@media screen and (max-width: 720px){header .container{width:90% !important}main{width:90% !important}main .queue{width:100% !important}main .queue .people{text-align:center}main .queue .people .place{margin:0 5px 10px !important}}
+@media screen and (max-width: 720px){header .container{width:90% !important}header .settings .settings-open{position:absolute;left:0;right:0;margin:0 auto}main{width:90% !important}main .queue{width:100% !important}main .queue .people{text-align:center}main .queue .people .place{margin:0 5px 10px !important}#g-signin2{width:50px;overflow:hidden;border-radius:2px}}
 /*# sourceMappingURL=mobile.css.map */
