@@ -1,4 +1,5 @@
-const server = require("express")();
+const express = require("express");
+const server = express();
 const bodyPareser = require("body-parser");
 
 const http = require("http").Server(server);
@@ -19,11 +20,17 @@ server.use((req, res, next) => {
 });
 server.use(bodyPareser.json());
 server.use(bodyPareser.urlencoded({extended: false}));
+server.use(express.static("public"));
+
+
+server.get("/", (req, res) => {
+	res.sendFile("index.html");
+});
 
 server.post("/api/place", (res, req) => {
 	let {id, place, name, photo, email} = res.body;
 
-	if(!name || !photo || !email || !place || !id) {
+	if(!name || !photo || !email || !id) {
 		return req.sendStatus(400);
 	}
 
@@ -37,7 +44,7 @@ server.post("/api/place", (res, req) => {
 				ws.socketBroadcast(types.NEW_PLACE, {
 					id,
 					place,
-					placeData: {photo, name}
+					placeData: {photo, name, email}
 				});
 				break;
 			case types.REMOVE_PLACE:
