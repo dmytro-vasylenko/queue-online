@@ -5,3 +5,4 @@ client/yarn-error.log
 
 server/node_modules
 server/yarn.lock
+server/public
