@@ -3,13 +3,12 @@ import axios from "axios";
 
 import {API} from "../constants/config";
 
-class TakePlace extends Component {
+class FreePlace extends Component {
     handleTakePlace = async () => {
         const response = await axios.post(`${API}/place`, {
             google_token: localStorage.getItem("google_token"),
             id: this.props.id
         });
-        console.log(response);
     };
 
     render() {
@@ -21,4 +20,4 @@ class TakePlace extends Component {
     }
 }
 
-export default TakePlace;
+export default FreePlace;
