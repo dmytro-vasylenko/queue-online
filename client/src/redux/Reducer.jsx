@@ -1,28 +1,27 @@
-import {ADD_QUEUE, SET_PLACE, REMOVE_PLACE, UPDATE_QUEUES} from "../constants/types";
+import {ADD_QUEUE, ADD_PLACE, REMOVE_PLACE, UPDATE_QUEUES} from "../constants/types";
 
 const initialState = {
     queues: []
 };
 
 const reducer = function(state = initialState, action) {
+    let newQueues;
     switch (action.type) {
         case ADD_QUEUE:
             return {
                 queues: [...state.queues, action.payload]
             };
-        case SET_PLACE:
+        case ADD_PLACE:
+            newQueues = [...state.queues];
+            newQueues.filter(queue => queue.id === action.payload.id)[0].students.push(action.payload.place);
             return {
-                queues: Object.assign({}, state.queues, {
-                    [action.payload.id]: Object.assign({}, state.queues[action.payload.id], {
-                        places: Object.assign({}, state.queues[action.payload.id].places, {
-                            [action.payload.place]: action.payload.placeData
-                        })
-                    })
-                })
+                queues: newQueues
             };
         case REMOVE_PLACE:
-            let newQueues = state.queues;
-            delete newQueues[action.payload.id].places[action.payload.place];
+            newQueues = [...state.queues];
+            newQueues
+                .filter(queue => queue.id === action.payload.queueId)[0]
+                .students.splice(action.payload.placeId, 1);
             return {
                 queues: newQueues
             };
