@@ -2,36 +2,34 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import openSocket from "socket.io-client";
 
-const NEW_PLACE = "NEW_PLACE";
-const REMOVE_PLACE = "REMOVE_PLACE";
-const NEW_QUEUE = "NEW_QUEUE";
-
+import {SOCKET} from "../constants/config";
+import {ADD_PLACE, REMOVE_PLACE, ADD_QUEUE} from "../constants/types";
 
 class WS extends Component {
-	io = openSocket("https://queues-service.herokuapp.com/");
-	componentDidMount() {
-		this.io.on(NEW_PLACE, data => this.props.onSetPlace(data));
-		this.io.on(REMOVE_PLACE, data => this.props.onRemovePlace(data));
-		this.io.on(NEW_QUEUE, data => this.props.onNewQueue(data));
-	}
+    io = openSocket(SOCKET);
+    componentDidMount() {
+        this.io.on("NEW_PLACE", data => this.props.onSetPlace(data));
+        this.io.on("REMOVE_PLACE", data => this.props.onRemovePlace(data));
+        this.io.on("NEW_QUEUE", data => this.props.onNewQueue(data));
+    }
 
-	render() {
-		return <div/>;
-	}
-};
+    render() {
+        return <div />;
+    }
+}
 
 const mapDispatchToProps = dispatch => {
-	return {
-		onSetPlace: data => {
-			dispatch({type: "SET_PLACE", payload: data});
-		},
-		onRemovePlace: data => {
-			dispatch({type: "REMOVE_PLACE", payload: data});
-		},
-		onNewQueue: data => {
-			dispatch({type: "SET_QUEUE", payload: data})
-		}
-	};
+    return {
+        onSetPlace: data => {
+            dispatch({type: ADD_PLACE, payload: data});
+        },
+        onRemovePlace: data => {
+            dispatch({type: REMOVE_PLACE, payload: data});
+        },
+        onNewQueue: data => {
+            dispatch({type: ADD_QUEUE, payload: data});
+        }
+    };
 };
 
 export default connect(null, mapDispatchToProps)(WS);

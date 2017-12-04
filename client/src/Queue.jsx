@@ -1,45 +1,88 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import Place from "./Place";
+import moment from "moment";
+import "moment/locale/ru";
+
+import Place from "./containers/Place";
+import FreePlace from "./components/FreePlace";
+import SelectedPlace from "./components/SelectedPlace";
 
 class Queue extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isOpen: false
-		};
-		this.handleClick = this.handleClick.bind(this);
-	}
+    constructor(props) {
+        super(props);
 
-	handleClick() {
-		this.setState({
-			isOpen: !this.state.isOpen
-		});
-	}
+        this.state = {
+            isOpen: false
+        };
 
-	render() {
-		var places = [];
-		for(var i = 0; i < this.props.countOfPlaces; i++) {
-			places.push(<Place id={i} key={i} data-queue-id={this.props["data-id"]} />);
-		}
+        this.handleClick = this.handleClick.bind(this);
+    }
 
-		return (
-			<div className="queue">
-				<h2>{this.props.title}</h2>
-				<div className={this.state.isOpen ? "info info-open" : "info"}>
-					<div className="people">
-					{places}
-					</div>
-				</div>
-				<button className="open-info" onClick={this.handleClick}>{this.state.isOpen ? "Скрыть" : "Подробней"}</button>
-			</div>
-			);
-	}
+    handleClick() {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
+    }
+
+    render() {
+        const data = this.props.queue;
+        const userEmail = localStorage.getItem("email");
+
+        if (!data) {
+            return <div />;
+        }
+        console.log(data);
+
+        return (
+            <div className="queue">
+                <h2>
+                    {data.lessonType} на {moment(data.date).format("ll")} по{" "}
+                    <span title={data.lessonName}>{data.lessonShortName}</span>
+                </h2>
+                <div className={this.state.isOpen ? "info info-open" : "info"}>
+                    {data.subQueue && <h3>Очередь с первым приоритетом</h3>}
+                    <div className="people">
+                        {data.students.map((student, index) => {
+                            if (userEmail === student.email) {
+                                return <SelectedPlace {...student} id={index + 1} key={index} queueId={data.id} />;
+                            }
+                            return (
+                                <Place {...student} id={index + 1} key={index} selected={userEmail === student.email} />
+                            );
+                        })}
+                        <FreePlace id={data.id} />
+                    </div>
+                    {data.SubQueue && (
+                        <div>
+                            <h3>Очередь со вторым приоритетом</h3>
+                            <div className="people">
+                                {data.subQueue.students.map((student, index) => {
+                                    return (
+                                        <Place
+                                            {...student}
+                                            id={index + 1}
+                                            key={index}
+                                            selected={userEmail === student.email}
+                                        />
+                                    );
+                                })}
+                                <FreePlace id={data.subQueue.id} />
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <button className="open-info" onClick={this.handleClick}>
+                    {this.state.isOpen ? "Скрыть" : "Подробней"}
+                </button>
+            </div>
+        );
+    }
 }
 
-export default connect(
-	(state, ownProps) => ({
-		places: state.queues[ownProps["data-id"]]
-	}),
-	dispatch => ({})
-)(Queue);
+const mapStateToProps = (state, ownProps) => {
+    return {
+        queue: state.queues.filter(queue => queue.id === ownProps.id)[0]
+    };
+};
+
+export default connect(mapStateToProps)(Queue);
