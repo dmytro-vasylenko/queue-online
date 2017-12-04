@@ -1,5 +1,5 @@
-@import "loader"
-@import "mobile"
+@import "loader.sass"
+@import "mobile.sass"
 
 $width: 700px
 $people-in-raw: 8
@@ -192,7 +192,25 @@ main
 						background: white
 
 				.selected-place
-					border: 2px solid red
+					border: 2px solid rgb(209, 72, 54)
+					cursor: pointer
+					box-sizing: border-box
+
+					&::before
+						content: "x"
+						width: 100%
+						height: 100%
+						position: absolute
+						z-index: 999999
+						background: rgba(0, 0, 0, 0)
+						font-size: 30px
+						color: transparent
+						line-height: $width/$people-in-raw - 4px
+						transition: background 0.2s ease-in
+
+					&:hover::before
+						color: white
+						background: rgba(209, 72, 54, 1)
 
 button
 	width: 150px
