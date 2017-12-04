@@ -10,9 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.1",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "googleapis": "^23.0.0",
+    "knex": "^0.14.2",
     "mongodb": "^2.2.30",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.24.0",
     "socket.io": "^2.0.3"
   },
   "engines": {
