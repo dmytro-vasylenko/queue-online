@@ -25,38 +25,16 @@ module.exports = knex => {
         callback(null);
     };
 
-    const getQueues = async callback => {
-        const studentsInQueues = await queries.getQueues();
+    const removePlace = async (data, callback) => {
+        queries.removePlace(data);
+    };
 
-        const queues = {};
-        studentsInQueues.forEach(item => {
-            if (queues[item.id]) {
-                queues[item.id].students.push({
-                    name: item.name,
-                    email: item.email,
-                    photo: item.photo
-                });
-            } else {
-                queues[item.id] = {
-                    id: item.id,
-                    lesson: {
-                        name: item.lessonName,
-                        shortName: item.lessonShortName
-                    },
-                    group: item.group,
-                    type: item.lessonType,
-                    classRoom: item.class_room,
-                    date: item.date,
-                    students: [
-                        {
-                            name: item.name,
-                            email: item.email,
-                            photo: item.photo
-                        }
-                    ]
-                };
-            }
-        });
+    const getQueues = async callback => {
+        const queues = await queries.getQueues();
+        for (const queue of queues) {
+            queue.students = await queries.getStudentsByQueueId(queue.id);
+        }
+        console.log("QUEUES", queues);
         callback(queues);
     };
 
@@ -77,5 +55,5 @@ module.exports = knex => {
         db.collection("queues").remove({title: data.title});
     };
 
-    return {addPlace, getQueues, addQueue, deleteQueue};
+    return {addPlace, removePlace, getQueues, addQueue, deleteQueue};
 };
