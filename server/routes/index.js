@@ -3,44 +3,58 @@ const auth = require("../auth");
 const types = require("../constants").types;
 
 module.exports = (server, websocket) => {
-    server.post("/api/place", async (res, req) => {
-        const {id, google_token} = res.body;
+    server.post("/api/place", async (req, res) => {
+        const {id, google_token} = req.body;
 
         if (!id || !google_token) {
-            return req.sendStatus(400);
+            return res.sendStatus(400);
         }
 
         const user = await auth.getUser(google_token);
 
         if (!user) {
-            return req.send({error: "Bad token"});
+            return res.send({error: "Bad token"});
         }
 
         database.Queues.addPlace({id, user}, err => {
             if (err) {
-                return req.send(err);
+                return res.send(err);
             }
 
-            websocket.socketBroadcast(types.NEW_PLACE, {
-                id,
-                place: user
-            });
+            websocket.socketBroadcast(types.NEW_PLACE, {id, place: user});
 
-            return req.sendStatus(200);
+            return res.sendStatus(200);
         });
     });
 
-    server.get("/api/queues", (res, req) => {
+    server.delete("/api/place", async (req, res) => {
+        const {id, google_token} = req.body;
+
+        if (!id || !google_token) {
+            return res.sendStatus(400);
+        }
+
+        const user = await auth.getUser(google_token);
+
+        if (!user) {
+            return res.send({error: "Bad token"});
+        }
+
+        database.Queues.removePlace({id, user});
+        return res.sendStatus(200);
+    });
+
+    server.get("/api/queues", (req, res) => {
         database.Queues.getQueues(queues => {
-            return req.send(queues);
+            return res.send(queues);
         });
     });
 
-    server.post("/api/queues", (res, req) => {
+    server.post("/api/queues", (req, res) => {
         console.log(database);
-        let data = res.body;
+        let data = req.body;
         if (!data || !data.title || !data.quantityOfPlaces || !data.date) {
-            return req.sendStatus(400);
+            return res.sendStatus(400);
         }
 
         database.Queues.addQueue(data, queueId => {
@@ -50,17 +64,17 @@ module.exports = (server, websocket) => {
                 countOfPlaces: data.quantityOfPlaces,
                 places: []
             });
-            return req.sendStatus(200);
+            return res.sendStatus(200);
         });
     });
 
-    server.delete("/api/queue", (res, req) => {
-        let data = res.body;
+    server.delete("/api/queue", (req, res) => {
+        let data = req.body;
         if (!data) {
-            return req.sendStatus(400);
+            return res.sendStatus(400);
         }
 
         database.Queues.deleteQueue(data);
-        return req.sendStatus(200);
+        return res.sendStatus(200);
     });
 };
