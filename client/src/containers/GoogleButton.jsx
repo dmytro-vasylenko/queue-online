@@ -15,7 +15,7 @@ const GoogleButton = props => {
         );
     }
 
-    return <GoogleLogout buttonText={`Logout: ${props.user.email}`} onLogoutSuccess={props.onLogout} />;
+    return <GoogleLogout buttonText={props.user.email} onLogoutSuccess={props.onLogout} />;
 };
 
 export default GoogleButton;
