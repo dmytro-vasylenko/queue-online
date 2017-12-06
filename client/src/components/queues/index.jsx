@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import axios from "axios";
 
 import Queue from "./Queue";
-import * as types from "./constants/types";
-import {API} from "./constants/config";
+import * as types from "../../constants/types";
+import {API} from "../../constants/config";
 
 class Content extends Component {
     componentWillMount() {

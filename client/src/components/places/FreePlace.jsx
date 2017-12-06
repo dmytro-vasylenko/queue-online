@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 
-import {API} from "../constants/config";
+import {API} from "../../constants/config";
 
 class FreePlace extends Component {
     handleTakePlace = async () => {

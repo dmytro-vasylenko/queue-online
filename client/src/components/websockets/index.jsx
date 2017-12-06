@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import openSocket from "socket.io-client";
 
-import {SOCKET} from "../constants/config";
-import {ADD_PLACE, REMOVE_PLACE, ADD_QUEUE} from "../constants/types";
+import {SOCKET} from "../../constants/config";
+import {ADD_PLACE, REMOVE_PLACE, ADD_QUEUE} from "../../constants/types";
 
 class WS extends Component {
     io = openSocket(SOCKET);

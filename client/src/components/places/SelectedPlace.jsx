@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import axios from "axios";
 
-import {API} from "../constants/config";
-import {REMOVE_PLACE} from "../constants/types";
+import {API} from "../../constants/config";
+import {REMOVE_PLACE} from "../../constants/types";
 
 class SelectedPlace extends Component {
     handleUnplace = () => {

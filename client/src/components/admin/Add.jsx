@@ -4,7 +4,7 @@ import Select from "react-select-me";
 import Calendar from "react-calendar";
 import axios from "axios";
 
-import {API} from "../constants/config";
+import {API} from "../../constants/config";
 import "react-select-me/src/ReactSelectMe.css";
 
 class Add extends Component {

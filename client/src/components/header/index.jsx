@@ -3,9 +3,9 @@ import {Link} from "react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 
-import {GOOGLE_API} from "../constants/config";
-import {UPDATE_QUEUES} from "../constants/types";
-import GoogleButton from "../containers/GoogleButton";
+import {GOOGLE_API} from "../../constants/config";
+import {UPDATE_QUEUES} from "../../constants/types";
+import GoogleButton from "./GoogleButton";
 
 class Header extends Component {
     state = {

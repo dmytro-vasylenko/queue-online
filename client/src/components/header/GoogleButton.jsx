@@ -1,7 +1,7 @@
 import React from "react";
 import {GoogleLogin, GoogleLogout} from "react-google-login";
 
-import {GOOGLE_CLIENT_ID} from "../constants/config";
+import {GOOGLE_CLIENT_ID} from "../../constants/config";
 
 const GoogleButton = props => {
     if (!props.user) {

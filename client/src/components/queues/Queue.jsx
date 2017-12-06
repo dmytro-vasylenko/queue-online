@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import moment from "moment";
 import "moment/locale/ru";
 
-import Place from "./containers/Place";
-import FreePlace from "./components/FreePlace";
-import SelectedPlace from "./components/SelectedPlace";
+import Place from "../places/Place";
+import FreePlace from "../places/FreePlace";
+import SelectedPlace from "../places/SelectedPlace";
 
 class Queue extends Component {
     constructor(props) {

@@ -2,10 +2,10 @@ import React, {Component} from "react";
 import axios from "axios";
 import {hashHistory} from "react-router";
 
-import Header from "./components/Header";
-import Add from "./admin/Add";
-import Edit from "./admin/Edit";
-import {API} from "./constants/config";
+import Header from "../header";
+import Add from "./Add";
+import Edit from "./Edit";
+import {API} from "../../constants/config";
 
 class Admin extends Component {
     constructor(props) {

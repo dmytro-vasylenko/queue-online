@@ -6,7 +6,7 @@ import {Router, Route, hashHistory} from "react-router";
 
 import reducer from "./store";
 import App from "./App";
-import Admin from "./Admin";
+import Admin from "./components/admin";
 
 const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
