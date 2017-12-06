@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {connect} from "react-redux";
 import moment from "moment";
 import "moment/locale/ru";
 
@@ -11,27 +10,22 @@ class Queue extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            isOpen: false
-        };
+        this.state = {isOpen: false};
 
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick() {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
+        this.setState({isOpen: !this.state.isOpen});
     }
 
     render() {
-        const data = this.props.queue;
+        const data = this.props;
         const userEmail = localStorage.getItem("email");
 
         if (!data) {
             return <div />;
         }
-        console.log(data);
 
         return (
             <div className="queue">
@@ -71,7 +65,7 @@ class Queue extends Component {
                         </div>
                     )}
                 </div>
-                <button className="open-info" onClick={this.handleClick}>
+                <button className="btn open-info" onClick={this.handleClick}>
                     {this.state.isOpen ? "Скрыть" : "Подробней"}
                 </button>
             </div>
@@ -79,10 +73,4 @@ class Queue extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        queue: state.queues.filter(queue => queue.id === ownProps.id)[0]
-    };
-};
-
-export default connect(mapStateToProps)(Queue);
+export default Queue;
