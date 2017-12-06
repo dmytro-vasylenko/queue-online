@@ -85,4 +85,25 @@ module.exports = (server, websocket) => {
         database.Queues.deleteQueue(data);
         return res.sendStatus(200);
     });
+    server.get("/api/whois", async (req, res) => {
+        const {google_token} = req.query;
+        const user = await auth.getUser(google_token);
+        if (!user) {
+            return res.send({error: "Bad token"});
+        }
+
+        const student = await database.Students.getStudent(user.email);
+        if (!student) {
+            const teacher = await database.Teachers.getTeacher(user.email);
+            if (!teacher) {
+                console.log("not user");
+                return res.send("not user");
+            }
+            console.log("teacher");
+            return res.send("teacher");
+        } else {
+            console.log("student");
+            return res.send("student");
+        }
+    });
 };
