@@ -106,4 +106,9 @@ module.exports = (server, websocket) => {
             return res.send("student");
         }
     });
+
+    server.get("/api/lessons-types", async (req, res) => {
+        const types = await database.Lessons.getLessonsTypes();
+        return res.send(types);
+    });
 };
