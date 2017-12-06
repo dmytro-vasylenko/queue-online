@@ -5,13 +5,10 @@ const types = require("../constants").types;
 module.exports = (server, websocket) => {
     server.post("/api/place", async (req, res) => {
         const {id, google_token} = req.body;
-
         if (!id || !google_token) {
             return res.sendStatus(400);
         }
-
         const user = await auth.getUser(google_token);
-
         if (!user) {
             return res.send({error: "Bad token"});
         }
@@ -29,13 +26,10 @@ module.exports = (server, websocket) => {
 
     server.delete("/api/place", async (req, res) => {
         const {id, google_token} = req.body;
-
         if (!id || !google_token) {
             return res.sendStatus(400);
         }
-
         const user = await auth.getUser(google_token);
-
         if (!user) {
             return res.send({error: "Bad token"});
         }
