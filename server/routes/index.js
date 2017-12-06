@@ -85,6 +85,7 @@ module.exports = (server, websocket) => {
         database.Queues.deleteQueue(data);
         return res.sendStatus(200);
     });
+
     server.get("/api/whois", async (req, res) => {
         const {google_token} = req.query;
         const user = await auth.getUser(google_token);
@@ -110,5 +111,25 @@ module.exports = (server, websocket) => {
     server.get("/api/lessons-types", async (req, res) => {
         const types = await database.Lessons.getLessonsTypes();
         return res.send(types);
+    });
+
+    server.get("/api/teacher-lessons", async (req, res) => {
+        const {google_token} = req.query;
+        const user = await auth.getUser(google_token);
+        if (!user) {
+            return res.send({error: "Bad token"});
+        }
+
+        const teacher = await database.Teachers.getTeacher(user.email);
+
+        const lessons = await database.Teachers.getLessons(teacher.id);
+        return res.send(lessons);
+    });
+
+    server.get("/api/lesson-groups", async (req, res) => {
+        const {lesson} = req.query;
+
+        const groups = await database.Groups.getGroupsByLesson(lesson);
+        return res.send(groups);
     });
 };
