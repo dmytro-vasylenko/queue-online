@@ -34,21 +34,19 @@ module.exports = knex => {
         for (const queue of queues) {
             queue.students = await queries.getStudentsByQueueId(queue.id);
         }
-        console.log("QUEUES", queues);
+
         callback(queues);
     };
 
-    const addQueue = async (data, callback) => {
-        const queueId = Math.random()
-            .toString()
-            .slice(2);
-        await db.collection("queues").insert({
-            id: queueId,
-            title: data.title,
-            countOfPlaces: data.quantityOfPlaces,
-            places: []
-        });
-        callback(queueId);
+    const addQueue = async data => {
+        if (data.sub_queue) {
+            const subQueueId = await queries.addQueue({...data, is_main: false, sub_queue: null});
+            const queueId = await queries.addQueue({...data, is_main: true, sub_queue: subQueueId});
+            return queueId;
+        } else {
+            const queueId = await queries.addQueue({...data, is_main: true, sub_queue: null});
+            return queueId;
+        }
     };
 
     const deleteQueue = data => {
