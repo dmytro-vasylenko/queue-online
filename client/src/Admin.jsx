@@ -4,6 +4,7 @@ import {hashHistory} from "react-router";
 
 import Header from "./components/Header";
 import Add from "./admin/Add";
+import Edit from "./admin/Edit";
 import {API} from "./constants/config";
 
 class Admin extends Component {
@@ -14,7 +15,7 @@ class Admin extends Component {
             teacher: false,
             tabs: [
                 {title: "Добавить очередь", open: false, content: <Add />},
-                {title: "Список очередей", open: false, content: "Удалить..."},
+                {title: "Список очередей", open: false, content: <Edit />},
                 {title: "Настройки админ-панели", open: false, content: "Настроить..."}
             ]
         };
