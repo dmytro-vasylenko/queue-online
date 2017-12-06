@@ -1,28 +1,28 @@
 {
-  "name": "queue",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "auth0-js": "^8.9.1",
-    "axios": "^0.16.2",
-    "moment": "^2.19.3",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-google-auth": "^0.4.1",
-    "react-google-login": "^3.0.2",
-    "react-redux": "^5.0.5",
-    "react-router": "^3.2.0",
-    "react-router-redux": "^4.0.8",
-    "redux": "^3.7.2",
-    "socket.io-client": "^2.0.3"
-  },
-  "devDependencies": {
-    "react-scripts": "1.0.10"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "name": "queue",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "axios": "^0.16.2",
+        "moment": "^2.19.3",
+        "react": "^15.6.1",
+        "react-calendar": "^2.6.0",
+        "react-dom": "^15.6.1",
+        "react-google-login": "^3.0.2",
+        "react-redux": "^5.0.5",
+        "react-router": "^3.2.0",
+        "react-router-redux": "^4.0.8",
+        "react-select-me": "^0.10.1",
+        "redux": "^3.7.2",
+        "socket.io-client": "^2.0.4"
+    },
+    "devDependencies": {
+        "react-scripts": "1.0.10"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    }
 }
