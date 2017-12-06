@@ -50,22 +50,36 @@ module.exports = (server, websocket) => {
         });
     });
 
-    server.post("/api/queues", (req, res) => {
-        console.log(database);
-        let data = req.body;
-        if (!data || !data.title || !data.quantityOfPlaces || !data.date) {
+    server.post("/api/queue", async (req, res) => {
+        const {google_token, type_lesson, lesson, group_id, date, class_room, sub_queue} = req.body;
+        if (!google_token || !type_lesson || !lesson || !group_id || !date || !class_room) {
             return res.sendStatus(400);
         }
 
-        database.Queues.addQueue(data, queueId => {
-            websocket.socketBroadcast(types.NEW_QUEUE, {
-                id: queueId,
-                title: data.title,
-                countOfPlaces: data.quantityOfPlaces,
-                places: []
-            });
-            return res.sendStatus(200);
+        const user = await auth.getUser(google_token);
+        if (!user) {
+            return res.send({error: "Bad token"});
+        }
+
+        const teacher = await database.Teachers.getTeacher(user.email);
+        if (!teacher) {
+            return res.send({error: "You are not a teacher"});
+        }
+
+        const queueId = await database.Queues.addQueue({
+            type_lesson,
+            lesson,
+            group_id,
+            date,
+            class_room,
+            sub_queue
         });
+
+        if (!queueId) {
+            return res.send({error: "Some error"});
+        }
+
+        return res.sendStatus(200);
     });
 
     server.delete("/api/queue", (req, res) => {
