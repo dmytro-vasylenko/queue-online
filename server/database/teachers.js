@@ -4,7 +4,8 @@ module.exports = knex => {
     const queries = require("./queries")(knex);
 
     return {
-        getTeacher: async email => queries.getTeacher(email),
-        getLessons: async id => queries.getLessonsByTeacher(id)
+        getTeacher: email => queries.getTeacher(email),
+        getLessons: id => queries.getLessonsByTeacher(id),
+        getQueues: id => queries.getQueuesByTeacher(id)
     };
 };

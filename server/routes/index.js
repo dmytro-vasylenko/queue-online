@@ -121,7 +121,6 @@ module.exports = (server, websocket) => {
         }
 
         const teacher = await database.Teachers.getTeacher(user.email);
-
         const lessons = await database.Teachers.getLessons(teacher.id);
         return res.send(lessons);
     });
@@ -131,5 +130,21 @@ module.exports = (server, websocket) => {
 
         const groups = await database.Groups.getGroupsByLesson(lesson);
         return res.send(groups);
+    });
+
+    server.get("/api/teacher-queues", async (req, res) => {
+        const {google_token} = req.query;
+        const user = await auth.getUser(google_token);
+        if (!user) {
+            return res.send({error: "Bad token"});
+        }
+
+        const teacher = await database.Teachers.getTeacher(user.email);
+        if (!teacher) {
+            return res.send({error: "You are not a teacher"});
+        }
+
+        const queues = await database.Teachers.getQueues(teacher.id);
+        return res.send(queues);
     });
 };

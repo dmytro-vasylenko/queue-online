@@ -67,5 +67,11 @@ module.exports = knex => ({
     addQueue: async data =>
         await knex("Queues")
             .insert(data)
-            .returning("id")
+            .returning("id"),
+
+    getQueuesByTeacher: async id =>
+        await knex("Teachers_Lessons")
+            .select("Queues.*")
+            .innerJoin("Queues", "Queues.lesson", "Teachers_Lessons.lesson")
+            .where({teacher: id})
 });
