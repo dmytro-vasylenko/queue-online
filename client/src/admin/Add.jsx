@@ -1,68 +1,131 @@
 import React, {Component} from "react";
+import {hashHistory} from "react-router";
+import Select from "react-select-me";
+import Calendar from "react-calendar";
 import axios from "axios";
 
-const URL = "http://localhost:3001/api";
+import {API} from "../constants/config";
+import s from "react-select-me/src/ReactSelectMe.css";
 
 class Add extends Component {
-	constructor(props) {
-		super(props);
+    state = {
+        type: null,
+        types: [],
+        lesson: null,
+        lessons: [],
+        group: null,
+        groups: [],
+        classRoom: "",
+        date: null,
+        subQueue: false
+    };
 
-		this.state = {
-			title: "",
-			quantityOfPlaces: "",
-			date: ""
-		};
+    componentWillMount() {
+        axios.get(`${API}/lessons-types`).then(response => {
+            response.data.forEach(type => {
+                type.label = type.name;
+                type.value = type.id;
+            });
+            this.setState({types: response.data});
+        });
+        axios.get(`${API}/teacher-lessons?google_token=${localStorage.getItem("google_token")}`).then(response => {
+            response.data.forEach(lesson => {
+                lesson.label = lesson.name;
+                lesson.value = lesson.id;
+            });
+            this.setState({lessons: response.data});
+        });
+    }
 
-		this.handleCreate = this.handleCreate.bind(this);
-		this.changeTitle = this.changeTitle.bind(this);
-		this.changeDate = this.changeDate.bind(this);
-		this.changeQuantity = this.changeQuantity.bind(this);
-	}
+    handleCreateQueue(event) {
+        event.preventDefault();
+        const {type, lesson, group, date, classRoom, subQueue} = this.state;
+        if (!type || !lesson || !group || !date || !classRoom) {
+            return alert("Не заполнены все поля");
+        }
 
-	changeTitle(e) {
-		this.setState({title: e.target.value});
-	}
+        axios
+            .post(`${API}/queue`, {
+                google_token: localStorage.getItem("google_token"),
+                type_lesson: type.id,
+                lesson: lesson.id,
+                group_id: group.id,
+                date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+                class_room: classRoom,
+                sub_queue: subQueue
+            })
+            .then(response => {
+                if (response.data === "OK") {
+                    this.setState({
+                        type: null,
+                        lesson: null,
+                        group: null,
+                        classRoom: "",
+                        date: null,
+                        subQueue: false
+                    });
+                    return alert("Очередь успешно создана");
+                }
+                alert("Произошла ошибка, попробуйте позже");
+            });
+    }
 
-	changeDate(e) {
-		this.setState({date: e.target.value});
-	}
+    selectLesson(value) {
+        this.setState({lesson: value});
+        axios.get(`${API}/lesson-groups?lesson=${value.id}`).then(response => {
+            response.data.forEach(group => {
+                group.label = group.code;
+                group.value = group.id;
+            });
+            this.setState({groups: response.data});
+        });
+    }
 
-	changeQuantity(e) {
-		this.setState({quantityOfPlaces: e.target.value});
-	}
-
-	handleCreate() {
-		let {state: queue} = this;
-		if(queue.title && queue.date && queue.quantityOfPlaces) {
-			axios.post(`${URL}/queues`, {
-				title: queue.title,
-				date: queue.date,
-				quantityOfPlaces: queue.quantityOfPlaces
-			}).then(response => {
-				alert("Очередь была успешно добавлена");
-				this.setState({
-					title: "",
-					quantityOfPlaces: "",
-					date: ""
-				});
-			})
-		} else {
-			alert("Вы не заполнили все поля");
-		}
-	}
-
-	render() {
-		return (
-			<div>
-				<input type="text" value={this.state.title} onChange={this.changeTitle} placeholder="Название очереди" />
-				<div className="center-block">
-					<input type="date" value={this.state.date} onChange={this.changeDate} placeholder="Дата открытия" />
-					<input type="number" value={this.state.quantityOfPlaces} onChange={this.changeQuantity} placeholder="Количество мест"/>
-				</div>
-				<button onClick={this.handleCreate}>Создать</button>
-			</div>
-		);
-	}
+    render() {
+        return (
+            <div>
+                <form onSubmit={event => this.handleCreateQueue(event)}>
+                    <Select
+                        placeholder="Выберите тип занятия"
+                        value={this.state.type}
+                        onChange={value => this.setState({type: value})}
+                        options={this.state.types}
+                    />
+                    <Select
+                        placeholder="Выберите предмет"
+                        value={this.state.lesson}
+                        onChange={value => this.selectLesson(value)}
+                        options={this.state.lessons}
+                    />
+                    {this.state.lesson && (
+                        <Select
+                            placeholder="Выберите группу"
+                            value={this.state.group}
+                            onChange={value => this.setState({group: value})}
+                            options={this.state.groups}
+                        />
+                    )}
+                    <input
+                        type="text"
+                        value={this.state.classRoom}
+                        onChange={text => this.setState({classRoom: text.target.value})}
+                        placeholder="Аудитория"
+                    />
+                    <Calendar onChange={date => this.setState({date})} value={this.state.date} />
+                    <div>
+                        <input
+                            type="checkbox"
+                            id="sub-queue"
+                            checked={this.state.subQueue}
+                            onChange={value => this.setState({subQueue: value.target.checked})}
+                        />
+                        <label htmlFor="sub-queue">Создать очередь со вторым приоритетом?</label>
+                    </div>
+                    <input className="btn" type="submit" value="Создать" />
+                </form>
+            </div>
+        );
+    }
 }
 
 export default Add;
