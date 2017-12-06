@@ -28,6 +28,11 @@ module.exports = knex => ({
             .select()
             .where({email}))[0],
 
+    getTeacher: async email =>
+        (await knex("Teachers")
+            .select()
+            .where({email}))[0],
+
     addStudentToQueue: async ({queue, student}) => await knex("Places").insert({queue, student}),
 
     isStudentInQueue: async (queue, student) =>
@@ -35,5 +40,32 @@ module.exports = knex => ({
             .select()
             .where({queue, student}))[0],
 
-    removePlace: async ({id, user}) => await knex("Places").del()
+    removePlace: async ({id, user}) =>
+        await knex("Places")
+            .where({queue: id})
+            .whereIn("student", function() {
+                this.select("id")
+                    .from("Students")
+                    .where({email: user.email});
+            })
+            .del(),
+
+    getLessonsTypes: async () => await knex("Lessons_Types").select(),
+
+    getLessonsByTeacher: async teacher =>
+        await knex("Teachers_Lessons")
+            .select("Lessons.name", "Lessons.short_name", "Lessons.id")
+            .innerJoin("Lessons", "Lessons.id", "Teachers_Lessons.lesson")
+            .where({teacher}),
+
+    getGroupsByLesson: async lesson =>
+        await knex("Groups_Lessons")
+            .select("Groups.code", "Groups.id")
+            .innerJoin("Groups", "Groups.id", "Groups_Lessons.group_id")
+            .where({lesson}),
+
+    addQueue: async data =>
+        await knex("Queues")
+            .insert(data)
+            .returning("id")
 });
