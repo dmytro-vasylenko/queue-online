@@ -5,7 +5,7 @@ import Calendar from "react-calendar";
 import axios from "axios";
 
 import {API} from "../constants/config";
-import s from "react-select-me/src/ReactSelectMe.css";
+import "react-select-me/src/ReactSelectMe.css";
 
 class Add extends Component {
     state = {
