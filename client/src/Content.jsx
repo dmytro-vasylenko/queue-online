@@ -22,14 +22,14 @@ class Content extends Component {
     }
 
     render() {
-        if (!this.props.queues.length) {
+        if (!Object.keys(this.props.queues).length) {
             return <div />;
         }
 
         return (
             <main>
-                {this.props.queues.map((item, index) => {
-                    return <Queue {...item} key={index} />;
+                {Object.keys(this.props.queues).map(item => {
+                    return <Queue {...this.props.queues[item]} key={item} />;
                 })}
             </main>
         );
