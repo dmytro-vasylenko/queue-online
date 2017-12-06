@@ -37,6 +37,7 @@ header
 			float: right
 			margin-top: 10px
 			clear: none
+			height: 40px
 
 
 		a
@@ -212,7 +213,7 @@ main
 						color: white
 						background: rgba(209, 72, 54, 1)
 
-button
+.btn
 	width: 150px
 	padding: 0 15px
 	height: 40px
@@ -235,21 +236,29 @@ button
 		color: #5161e8
 		background: white
 
-input
+input[type=text]
 	width: 100%
 	box-sizing: border-box
-	padding: 0 20px
-	border: 2px solid #5161e8
-	background: nobe
+	padding: 0 10px
+	border: 1px solid #373c43
+	border-radius: 3px
+	background: none
 	outline: none
 	height: 40px
-	font-size: 16px
-	margin-bottom: 10px
+	font-size: 14px
+	margin-bottom: 20px
+
+input[type=checkbox]
+	width: 20px
+	height: 20px
+	margin-right: 20px
+	float: left
+	margin-bottom: 20px
 
 .tab
-	overflow: hidden
 	width: 100%
 	margin-bottom: 2px
+	overflow: hidden
 
 	.title
 		background: #5161e8
@@ -273,10 +282,21 @@ input
 
 	.content
 		display: none
-		overflow: hidden
 		border: 2px solid #5161e8
 		padding: 20px
 		background: white
+		postition: relative
+		overflow: hidden
+
+		.react-calendar
+			margin: 0 auto 20px
+
+		.dd__wrapper
+			margin-bottom: 20px
+
+		.dd__list
+			display: block !important
+			position: relative !important
 
 		.center-block
 			text-align: center
