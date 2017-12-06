@@ -71,7 +71,21 @@ module.exports = knex => ({
 
     getQueuesByTeacher: async id =>
         await knex("Teachers_Lessons")
-            .select("Queues.*")
+            .select(
+                "Queues.date",
+                "Queues.class_room",
+                "Queues.id",
+                {lessonName: "Lessons.name"},
+                {lessonShortName: "Lessons.short_name"},
+                {lessonType: "Lessons_Types.name"},
+                {group: "Groups.code"}
+            )
             .innerJoin("Queues", "Queues.lesson", "Teachers_Lessons.lesson")
+            .where({
+                is_main: 1
+            })
+            .innerJoin("Lessons", "Queues.lesson", "Lessons.id")
+            .innerJoin("Lessons_Types", "Queues.type_lesson", "Lessons_Types.id")
+            .innerJoin("Groups", "Queues.group_id", "Groups.id")
             .where({teacher: id})
 });
