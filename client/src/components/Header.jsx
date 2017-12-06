@@ -60,10 +60,7 @@ class Header extends Component {
     }
 
     render() {
-        const menus = [
-            {title: "Главная", link: "/"}
-            // {title: "Админ-панель", link: "/admin"}
-        ];
+        const menus = [{title: "Главная", link: "/"}, {title: "Управление очередями", link: "/admin"}];
 
         return (
             <header>
